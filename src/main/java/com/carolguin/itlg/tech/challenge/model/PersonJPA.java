@@ -25,13 +25,13 @@ public class PersonJPA {
 
   public PersonJPA(){}
 
-  public PersonJPA(Long id, Person person) {
-    this.id = id;
+  public PersonJPA(Person person) {
+    this.id = person.getId();
     this.firstName = person.getFirstName();
     this.lastName = person.getLastName();
     this.birthdate = person.getBirthdate();
     this.hasInsurance = person.getHasInsurance();
-
+    person.getFavouriteMovies().forEach(movie -> this.addMovie(new MovieJPA(movie.getTitle(), movie.getGenre())));
   }
 
   public void addMovie(MovieJPA movieJPA) {

@@ -9,16 +9,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class PersonService {
 
   @Value("${max.movies.per.person}")
-  private double maxMoviesPerPerson;
+  private int maxMoviesPerPerson;
 
   @Autowired
   private PersonRepository personRepository;
@@ -26,19 +28,24 @@ public class PersonService {
   private static final Logger LOGGER = LoggerFactory.getLogger(PersonService.class);
 
 
-  public Optional<Person> create(Long id, Person person) {
-    Optional<PersonJPA> personJPAOptional = personRepository.findById(id);
+  public Optional<Person> create(Person person) {
+    Optional<PersonJPA> personJPAOptional = personRepository.findById(person.getId());
 
-    if (!personJPAOptional.isPresent()) {
-      PersonJPA personJPA = new PersonJPA(id, person);
+    if (personJPAOptional.isPresent()) {
+      LOGGER.warn("Person already exists -> {}", person.getId());
+      return Optional.empty();
+    }
+    else if (person.getFavouriteMovies().size() > maxMoviesPerPerson) {
+      LOGGER.warn("Person can't have more than {} favourite movies", maxMoviesPerPerson);
+      return Optional.empty();
+    }
+    else {
+      PersonJPA personJPA = new PersonJPA(person);
       PersonJPA personSaved = personRepository.save(personJPA);
       LOGGER.info("Person ({} - {} {}) created successfully", personSaved.getId(), personSaved.getFirstName(), personSaved.getLastName());
       return Optional.of(new Person(personSaved));
     }
-    else {
-      LOGGER.warn("Person already exists -> {}", id);
-      return Optional.empty();
-    }
+
   }
 
 

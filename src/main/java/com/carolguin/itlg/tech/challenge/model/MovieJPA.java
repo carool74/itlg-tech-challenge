@@ -25,6 +25,13 @@ public class MovieJPA {
   @EqualsAndHashCode.Exclude
   private PersonJPA person;
 
+  public MovieJPA(){}
+
+  public MovieJPA(String title, String genre){
+    this.title = title;
+    this.genre = genre;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o)
