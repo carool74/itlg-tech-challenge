@@ -8,4 +8,6 @@ import java.util.List;
 public interface PersonRepository extends CrudRepository<PersonJPA, Long> {
 
   List<PersonJPA> findByOrderByLastNameAscFirstNameAsc();
+
+  List<PersonJPA> findByFirstNameContainingIgnoreCase(String firstName);
 }

@@ -107,4 +107,12 @@ public class PersonService {
     }
   }
 
+
+  public List<Person> getByFirstName(String firstName) {
+    LOGGER.info("Getting persons by first name");
+    List<PersonJPA> personJPAList = personRepository.findByFirstNameContainingIgnoreCase(firstName);
+    List<Person> persons = personJPAList.stream().map(pJPA -> new Person(pJPA)).collect(Collectors.toList());
+    return persons;
+  }
+
 }

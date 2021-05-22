@@ -97,7 +97,7 @@ public class PersonController {
       @ApiResponse(code = 400, message = "Bad Request"),
       @ApiResponse(code = 404, message = "Not found"),
   })
-  @GetMapping(value="/byid/{id}")
+  @GetMapping(value="/by-id/{id}")
   public ResponseEntity<Person> getById(@NotNull @PathVariable Long id){
     Optional<Person> personOptional = personService.getById(id);
     if (!personOptional.isPresent()){
@@ -106,6 +106,16 @@ public class PersonController {
     return ResponseEntity.ok(personOptional.get());
   }
 
+
+  @ApiOperation(value = "Find persons by firstName")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Ok"),
+      @ApiResponse(code = 400, message = "Bad Request"),
+  })
+  @GetMapping(value="/by-name/{name}")
+  public ResponseEntity<List<Person>> getByFirstName(@NotNull @PathVariable String name){
+    return ResponseEntity.ok(personService.getByFirstName(name));
+  }
 
 
 }
