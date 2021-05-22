@@ -54,10 +54,11 @@ public class PersonService {
 
     if (personJPAOptional.isPresent()) {
       PersonJPA personJPA = personJPAOptional.get();
-      if (personToUpdate.getLastName().isPresent()) personJPA.setLastName(personToUpdate.getLastName().get());
-      if (personToUpdate.getFirstName().isPresent()) personJPA.setFirstName(personToUpdate.getFirstName().get());
-      if (personToUpdate.getBirthdate().isPresent()) personJPA.setBirthdate(personToUpdate.getBirthdate().get());
-      if (personToUpdate.getHasInsurance().isPresent()) personJPA.setHasInsurance(personToUpdate.getHasInsurance().get());
+      if (personToUpdate.getId()!=null) personJPA.setId(personToUpdate.getId());
+      if (personToUpdate.getLastName()!=null) personJPA.setLastName(personToUpdate.getLastName());
+      if (personToUpdate.getFirstName()!=null) personJPA.setFirstName(personToUpdate.getFirstName());
+      if (personToUpdate.getBirthdate()!=null) personJPA.setBirthdate(personToUpdate.getBirthdate());
+      if (personToUpdate.getHasInsurance()!=null) personJPA.setHasInsurance(personToUpdate.getHasInsurance());
 
       PersonJPA personSaved = personRepository.save(personJPA);
       LOGGER.info("Person ({} - {} {}) updated successfully", personSaved.getId(), personSaved.getFirstName(), personSaved.getLastName());

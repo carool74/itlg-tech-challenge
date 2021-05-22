@@ -32,7 +32,7 @@ public class PersonController {
       @ApiResponse(code = 400, message = "Bad Request"),
       @ApiResponse(code = 409, message = "Conflict: id already exists"),
   })
-  @PostMapping(value = "/create/{id}")
+  @PostMapping(value = "/{id}")
   public ResponseEntity<Person> create(@NotNull @Valid @RequestBody Person person) {
     Optional<Person> personOptional = personService.create(person);
     if (personOptional.isPresent()){
@@ -50,7 +50,7 @@ public class PersonController {
       @ApiResponse(code = 400, message = "Bad Request"),
       @ApiResponse(code = 404, message = "Not found"),
   })
-  @PutMapping("/update/{id}")
+  @PutMapping("/{id}")
   public ResponseEntity<Person> update(@NotNull @PathVariable("id") Long id,
                                        @NotNull @Valid @RequestBody PersonToUpdate personToUpdate){
     Optional<Person> personOptional = personService.update(id, personToUpdate);
@@ -68,7 +68,7 @@ public class PersonController {
       @ApiResponse(code = 400, message = "Bad Request"),
       @ApiResponse(code = 404, message = "Not found"),
   })
-  @DeleteMapping("/delete/{id}")
+  @DeleteMapping("/{id}")
   public ResponseEntity delete(@NotNull @PathVariable("id") Long id){
     Optional<Person> personOptional = personService.delete(id);
     if (personOptional.isPresent()){
